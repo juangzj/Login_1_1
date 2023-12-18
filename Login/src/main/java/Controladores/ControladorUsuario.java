@@ -30,7 +30,7 @@ public class ControladorUsuario {
      * @param registroUsuarios
      * @return
      */
-    public boolean registrarUsuario(String cedula, String contrasenia, String nombre, ArrayList<Usuario> registroUsuarios) {
+    public boolean registrarUsuario(String cedula, String contrasenia, String nombre, ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException {
         boolean comprobacionRegistro = false;
 
         // Si el ArrayList está vacío, agrega el primer usuario
@@ -39,6 +39,7 @@ public class ControladorUsuario {
             Usuario primerUsuario = new Usuario(cedula, contrasenia, nombre);
             // se agrega el usuario a el ArrayList
             registroUsuarios.add(primerUsuario);
+            guardarUsuarioTxt(registroUsuarios, context);
             System.out.println("Se agregó el primer usuario");
         } else {
             // Si el ArrayList no está vacío, verifica si la cédula ya está en uso
@@ -55,6 +56,7 @@ public class ControladorUsuario {
                 Usuario nuevoUsuario = new Usuario(cedula, contrasenia, nombre);
                 registroUsuarios.add(nuevoUsuario);
                 System.out.println("Se registró el usuario");
+                guardarUsuarioTxt(registroUsuarios, context);
                 mostrarRegistros(registroUsuarios);
             }
         }
@@ -108,6 +110,59 @@ public class ControladorUsuario {
             System.out.println("==============================================");
 
         }
+    }
+
+    public void guardarUsuarioTxt(ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException {
+        //creamos la ruta de los archivos data y la hoja txt
+        String path = "data/UsuariosRegistrados.txt";
+        //Obtenemos la ruta con el contexti del servlet y la concatenamos con la ruta anterior
+        String Rpath = context.getRealPath(path);
+        //Creamos un archivo con la ruta anterior
+        File archivo = new File(Rpath);
+        try (PrintWriter pluma = new PrintWriter(archivo)) {//se crea la pluma con la que se va a escribir en la hoja de texto
+            if (registroUsuarios.isEmpty()) {//si el arrayList registrousuarios esta vacio se lanza un mensaje por consola 
+                System.out.println("No hay usuarios registrados en el sistemas");
+            } else {// de lo contrario se escribe a los usuarios en el txt 
+                for (Usuario guardarUsuario : registroUsuarios) {
+                    pluma.println(guardarUsuario.getCedula() + "," + guardarUsuario.getContrasenia() + "," + guardarUsuario.getnombreUsuario());
+
+                }
+            }
+        }
+        //Ruta en la que se guardaran los usuarios
+        System.out.println("Ruta UsuariosRegistrados.txt: " + Rpath);
+        System.out.println("se guardo los usuarios");
+    }
+     public void leerRegistroUsuarios(ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException, IOException {
+        //Creamos la ruta de los archivos data y la hoja txt
+        String path = "data/UsuariosRegistrados.txt";
+        //Obtenemos la ruta con el contexto del servlet y la unimos con la ruta anterior
+        String Rpath = context.getRealPath(path);
+        //creamos un archivo con la ruta anterior
+        File archivo = new File(Rpath);
+        //usuamos los metodos Filereader y BufferedReader para la lectura del archivo de texto
+        FileReader fr = new FileReader(archivo);
+        BufferedReader lector = new BufferedReader(fr);
+
+        String linea = lector.readLine();
+        while (linea != null) {
+
+            String[] datos = linea.split(",");
+            String cedula = datos[0];
+            String contrasenia = datos[1];
+            String nombreUsuario = datos[2];
+
+            //llamado al metodo contructor de usuarios para crear un nuevo usuario con sus atributos
+            Usuario usuarioRegistrado = new Usuario(cedula, contrasenia, nombreUsuario);
+
+            //añadimos al arrayList registroUsuarios
+            registroUsuarios.add(usuarioRegistrado);
+
+            linea = lector.readLine();
+
+        }
+        fr.close();
+        lector.close();
     }
 
 }

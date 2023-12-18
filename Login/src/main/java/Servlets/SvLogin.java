@@ -42,7 +42,9 @@ public class SvLogin extends HttpServlet {
 
         //obtenemos el contexto del servlet
         ServletContext context = getServletContext();
-
+        
+        controladorU.leerRegistroUsuarios(registroUsuarios, context);
+        
         //extraemos los datos ingresados al formulario que esta en la pagina index.jsp
         String cedulaRegistrar = request.getParameter("cedulaRegistrar");
         String contraseniaRegistrar = request.getParameter("contraseniaRegistrar");
@@ -58,7 +60,7 @@ public class SvLogin extends HttpServlet {
          */
         if (cedulaRegistrar != null && contraseniaRegistrar != null && nombreUsuarioRegistrar != null) {//si las varibales llegan diferentes de null se hace llamado al metodo correspondiente para registrar el usuario
             //System.out.println("Conexion de datos correcto");
-            boolean verificacionRegistro = controladorU.registrarUsuario(cedulaRegistrar, contraseniaRegistrar, cedulaRegistrar, registroUsuarios);
+            boolean verificacionRegistro = controladorU.registrarUsuario(cedulaRegistrar, contraseniaRegistrar, cedulaRegistrar, registroUsuarios, context);
             response.sendRedirect("index.jsp");
         } else {// de lo contrario, se pedira las variables para el inicio de sesion
             String cedula = request.getParameter("cedula");
