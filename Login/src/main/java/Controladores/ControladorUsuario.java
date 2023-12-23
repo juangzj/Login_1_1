@@ -57,7 +57,7 @@ public class ControladorUsuario {
                 registroUsuarios.add(nuevoUsuario);
                 System.out.println("Se registró el usuario");
                 guardarUsuarioTxt(registroUsuarios, context);
-                mostrarRegistros(registroUsuarios);
+                //mostrarRegistros(registroUsuarios);
             }
         }
 
@@ -88,9 +88,10 @@ public class ControladorUsuario {
                     System.out.println("El usuario entro a la plataforma");
                     break;
 
-                } else {
-                    System.out.println("El usuario no pudo entrar a la plataforma");
-                }
+                } 
+            }
+            if(!comprobacionSesion){
+                System.out.println("El usuario no pudo entrar a la plataforma");
             }
         }
         return comprobacionSesion;
@@ -115,7 +116,7 @@ public class ControladorUsuario {
     public void guardarUsuarioTxt(ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException {
         //creamos la ruta de los archivos data y la hoja txt
         String path = "data/UsuariosRegistrados.txt";
-        //Obtenemos la ruta con el contexti del servlet y la concatenamos con la ruta anterior
+        //Obtenemos la ruta con el contexti del servlet y la concatenamos con la ruta anteriora
         String Rpath = context.getRealPath(path);
         //Creamos un archivo con la ruta anterior
         File archivo = new File(Rpath);
@@ -133,7 +134,12 @@ public class ControladorUsuario {
         System.out.println("Ruta UsuariosRegistrados.txt: " + Rpath);
         System.out.println("se guardo los usuarios");
     }
-     public void leerRegistroUsuarios(ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException, IOException {
+
+    public void leerRegistroUsuarios(ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException, IOException {
+
+        // Limpiar el ArrayList antes de cargar los usuarios para que no se repitan 
+        registroUsuarios.clear();
+
         //Creamos la ruta de los archivos data y la hoja txt
         String path = "data/UsuariosRegistrados.txt";
         //Obtenemos la ruta con el contexto del servlet y la unimos con la ruta anterior
