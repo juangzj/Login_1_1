@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,10 +43,14 @@ public class SvLogin extends HttpServlet {
 
         //obtenemos el contexto del servlet
         ServletContext context = getServletContext();
-    
+
+        //Metodo para leer los usuarios que ya estan registrados en la hoja txt
         controladorU.leerRegistroUsuarios(registroUsuarios, context);
-        
-        
+
+        //Variables globales
+        String alertaInicioSesion = "";
+        String alertaRegistroUsuario = "";
+
         //extraemos los datos ingresados al formulario que esta en la pagina index.jsp
         String cedulaRegistrar = request.getParameter("cedulaRegistrar");
         String contraseniaRegistrar = request.getParameter("contraseniaRegistrar");
@@ -55,13 +60,22 @@ public class SvLogin extends HttpServlet {
         // System.out.println("Cedula: " + cedulaRegistrar);
         //System.out.println("Contraseña: " + contraseniaRegistrar);
         //System.out.println("Nombre de usuario: " + nombreUsuarioRegistrar);
-
         /**
-         * If donde se verificara los datos ingresados y se determina si el usuario se registrara o iniciara sesion
+         * if donde se verificara los datos ingresados y se determina si el
+         * usuario se registrara o iniciara sesion
          */
         if (cedulaRegistrar != null && contraseniaRegistrar != null && nombreUsuarioRegistrar != null) {//si las varibales llegan diferentes de null se hace llamado al metodo correspondiente para registrar el usuario
             //System.out.println("Conexion de datos correcto");
             boolean verificacionRegistro = controladorU.registrarUsuario(cedulaRegistrar, contraseniaRegistrar, nombreUsuarioRegistrar, registroUsuarios, context);
+            if(verificacionRegistro){
+                alertaRegistroUsuario = "true";  // la cedula esta en uso
+                HttpSession miSesion = request.getSession();
+                miSesion.setAttribute("alertaRegistroUsuario", alertaRegistroUsuario);
+            }else{
+                alertaRegistroUsuario = "false"; // el usuario se registro de forma exitosa
+                HttpSession miSesion = request.getSession();
+                miSesion.setAttribute("alertaRegistroUsuario", alertaRegistroUsuario);
+            }
             response.sendRedirect("index.jsp");
         } else {// de lo contrario, se pedira las variables para el inicio de sesion
             String cedula = request.getParameter("cedula");
@@ -71,8 +85,14 @@ public class SvLogin extends HttpServlet {
 
             boolean comprobacionSesion = controladorU.inicioSesion(cedula, contrasenia, registroUsuarios);
             if (comprobacionSesion == true) {
+
                 response.sendRedirect("Plataforma.jsp");
             } else {
+
+                alertaInicioSesion = "false";
+                HttpSession miSesion = request.getSession();
+                miSesion.setAttribute("alertaInicioSesion", alertaInicioSesion);
+
                 response.sendRedirect("index.jsp");
             }
         }

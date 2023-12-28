@@ -5,6 +5,13 @@
 --%>
 
 <%@include file="Templates/Header.jsp" %>
+
+
+<%
+    String alertaInicioSesion = "";
+    String alertaRegistroUsuario = "";
+%>
+
 <section class="vh-100" style="background-color: #0B0A32;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -90,7 +97,58 @@
         </div>
     </div>
 </div>
+<!--Metodo para mostrar alerta de error al iniciar sesion -->
+<%
+    alertaInicioSesion = (String) request.getSession().getAttribute("alertaInicioSesion");
+
+    System.out.println("La alerta es: " + alertaInicioSesion);
+    if (alertaInicioSesion != null && alertaInicioSesion.equals("false")) {
+%>
 <script>
+    Swal.fire({
+        title: "Error",
+        text: "No pudo ingresar a la plataforma, por favor intente otra vez",
+        icon: "error"
+
+    });
+
 </script>
+
+<%
+    }
+%>
+<!-- Metodo para mostrar alertas al momento de registrar un usuario  -->
+<%
+    alertaRegistroUsuario = (String) request.getSession().getAttribute("alertaRegistroUsuario");
+    System.out.println("La alerta de inicio de sesion es: " + alertaRegistroUsuario);
+    if (alertaRegistroUsuario != null && alertaRegistroUsuario.equals("true")) {
+%>
+<script>
+    Swal.fire({
+        title: "Error",
+        text: "El numero de cedula ya esta en uso ",
+        icon: "error"
+
+    });
+
+</script>
+
+<%
+} else if (alertaRegistroUsuario != null && alertaRegistroUsuario.equals("false")) {
+%>
+<script>
+    Swal.fire({
+        title: "Registro exitoso",
+        text: "Usuario registrado ",
+        icon: "success"
+
+    });
+
+</script>
+
+<%
+    }
+%>
+
 
 <%@include file="Templates/Footer.jsp" %>

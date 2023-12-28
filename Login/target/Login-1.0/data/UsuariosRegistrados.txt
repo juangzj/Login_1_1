@@ -1,7 +1,2 @@
 a,a,a
 b,b,b
-c,c,c
-d,d,d
-e,e,e
-f,f,f
-h,h,h

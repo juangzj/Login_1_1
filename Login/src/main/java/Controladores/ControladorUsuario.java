@@ -32,6 +32,7 @@ public class ControladorUsuario {
      */
     public boolean registrarUsuario(String cedula, String contrasenia, String nombre, ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException {
         boolean comprobacionRegistro = false;
+        
 
         // Si el ArrayList está vacío, agrega el primer usuario
         if (registroUsuarios.isEmpty()) {
