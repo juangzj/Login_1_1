@@ -69,13 +69,13 @@ public class SvLogin extends HttpServlet {
             boolean verificacionRegistro = controladorU.registrarUsuario(cedulaRegistrar, contraseniaRegistrar, nombreUsuarioRegistrar, registroUsuarios, context);
             if(verificacionRegistro){
                 alertaRegistroUsuario = "true";  // la cedula esta en uso
-                HttpSession miSesion = request.getSession();
-                miSesion.setAttribute("alertaRegistroUsuario", alertaRegistroUsuario);
+           
             }else{
-                alertaRegistroUsuario = "false"; // el usuario se registro de forma exitosa
-                HttpSession miSesion = request.getSession();
-                miSesion.setAttribute("alertaRegistroUsuario", alertaRegistroUsuario);
+               alertaRegistroUsuario = "false"; // el usuario se registro de forma exitosa
+               
             }
+             HttpSession miSesion = request.getSession();
+             miSesion.setAttribute("alertaRegistroUsuario", alertaRegistroUsuario);
             response.sendRedirect("index.jsp");
         } else {// de lo contrario, se pedira las variables para el inicio de sesion
             String cedula = request.getParameter("cedula");

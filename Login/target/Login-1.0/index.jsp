@@ -7,10 +7,7 @@
 <%@include file="Templates/Header.jsp" %>
 
 
-<%
-    String alertaInicioSesion = "";
-    String alertaRegistroUsuario = "";
-%>
+
 
 <section class="vh-100" style="background-color: #0B0A32;">
     <div class="container py-5 h-100">
@@ -97,13 +94,55 @@
         </div>
     </div>
 </div>
-<!--Metodo para mostrar alerta de error al iniciar sesion -->
-<%
-    alertaInicioSesion = (String) request.getSession().getAttribute("alertaInicioSesion");
 
-    System.out.println("La alerta es: " + alertaInicioSesion);
-    if (alertaInicioSesion != null && alertaInicioSesion.equals("false")) {
+<%
+    String alertaRegistroUsuario = (String) request.getSession().getAttribute("alertaRegistroUsuario");
+    System.out.println("REGISTRO USUARIOS " + alertaRegistroUsuario);
+
+    if (alertaRegistroUsuario != null && !alertaRegistroUsuario.isEmpty()) {
+
+        if (alertaRegistroUsuario.equals("true")) {
 %>
+
+<script>
+    Swal.fire({
+        title: "Error",
+        text: "El numero de cedula ya esta en uso ",
+        icon: "error"
+
+    });
+
+</script>
+
+
+<%
+    // Limpiar la alerta después de mostrarla
+    request.getSession().removeAttribute("alertaRegistroUsuario");
+
+} else if (alertaRegistroUsuario.equals("false")) {
+    System.out.println("REGISTRO DE USUARIO " + alertaRegistroUsuario);
+%> 
+<script>
+    Swal.fire({
+        title: "Registro exitoso",
+        text: "Usuario registrado ",
+        icon: "success"
+
+    });
+
+</script>
+
+
+<%
+        // Limpiar la alerta después de mostrarla
+        request.getSession().removeAttribute("alertaRegistroUsuario");
+    }
+} else {
+    String alertaInicioSesion = (String) request.getSession().getAttribute("alertaIncioSesion");
+    System.out.println("LA ALERTA DE INICIO DE SESION ES: " + alertaInicioSesion);
+    if (alertaInicioSesion == null || alertaInicioSesion.equals("false")) {
+%>
+
 <script>
     Swal.fire({
         title: "Error",
@@ -115,38 +154,10 @@
 </script>
 
 <%
-    }
-%>
-<!-- Metodo para mostrar alertas al momento de registrar un usuario  -->
-<%
-    alertaRegistroUsuario = (String) request.getSession().getAttribute("alertaRegistroUsuario");
-    System.out.println("La alerta de inicio de sesion es: " + alertaRegistroUsuario);
-    if (alertaRegistroUsuario != null && alertaRegistroUsuario.equals("true")) {
-%>
-<script>
-    Swal.fire({
-        title: "Error",
-        text: "El numero de cedula ya esta en uso ",
-        icon: "error"
+    // Limpiar la alerta después de mostrarla
+        request.getSession().removeAttribute("alertaRegistroUsuario");
+        }
 
-    });
-
-</script>
-
-<%
-} else if (alertaRegistroUsuario != null && alertaRegistroUsuario.equals("false")) {
-%>
-<script>
-    Swal.fire({
-        title: "Registro exitoso",
-        text: "Usuario registrado ",
-        icon: "success"
-
-    });
-
-</script>
-
-<%
     }
 %>
 
