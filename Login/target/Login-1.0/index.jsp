@@ -32,12 +32,12 @@
                                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Ingrese a su cuenta</h5>
 
                                     <div class="form-outline mb-4">
-                                        <input type="text" name="cedula" class="form-control form-control-lg" />
+                                        <input type="text" name="cedula" class="form-control form-control-lg"  required/>
                                         <label  class="form-label"   >Cedula</label>
                                     </div>
 
                                     <div class="form-outline mb-4">
-                                        <input type="password" name="contrasenia" class="form-control form-control-lg" />
+                                        <input type="password" name="contrasenia" class="form-control form-control-lg" required/>
                                         <label  class="form-label" >Contraseña</label>
                                     </div>
 
@@ -138,9 +138,9 @@
         request.getSession().removeAttribute("alertaRegistroUsuario");
     }
 } else {
-    String alertaInicioSesion = (String) request.getSession().getAttribute("alertaIncioSesion");
+    String alertaInicioSesion = (String) request.getSession().getAttribute("alertaInicioSesion");
     System.out.println("LA ALERTA DE INICIO DE SESION ES: " + alertaInicioSesion);
-    if (alertaInicioSesion == null || alertaInicioSesion.equals("false")) {
+    if (alertaInicioSesion != null && alertaInicioSesion.equals("false")) {
 %>
 
 <script>
