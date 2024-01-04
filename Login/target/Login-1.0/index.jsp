@@ -30,21 +30,21 @@
                                     </div>
 
                                     <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Ingrese a su cuenta</h5>
-
+                                    <!-- entrada para el numero de cedula -->
                                     <div class="form-outline mb-4">
                                         <input type="text" name="cedula" class="form-control form-control-lg"  required/>
                                         <label  class="form-label"   >Cedula</label>
                                     </div>
-
+                                    <!-- entrada para la contrasenia-->
                                     <div class="form-outline mb-4">
                                         <input type="password" name="contrasenia" class="form-control form-control-lg" required/>
                                         <label  class="form-label" >Contraseña</label>
                                     </div>
-
+                                    <!-- Boton para enviar los datos al servlet -->
                                     <div class="pt-1 mb-4">
                                         <button class="btn btn-dark btn-lg btn-block" type="submit">Entrar</button>
                                     </div>
-
+                                    <!-- Boton para ejecutar el modal para el registro de un usuario-->
                                     <a class="small text-muted" href="#!"></a>
                                     <p class="mb-5 pb-lg-2" style="color: #393f81;"> ¿No tiene cuenta? <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroUsuario">
                                             Registrese aqui
@@ -59,7 +59,7 @@
     </div>
 </section>
 
-<!-- Modal -->
+<!-- Modal para el registro de usuario -->
 <div class="modal fade" id="registroUsuario" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -69,22 +69,22 @@
             </div>
             <form action="SvLogin" method="POST" id="registroForm">
                 <div class="modal-body">
-
+                    <!-- Entrada para el numero de cedula -->
                     <div class="form-outline mb-4">
                         <input type="text" name="cedulaRegistrar" class="form-control form-control-lg" />
                         <label  class="form-label"   >Cedula</label>
                     </div>
-
+                    <!-- Entrada para la contrasenia-->
                     <div class="form-outline mb-4">
                         <input type="password" name="contraseniaRegistrar" class="form-control form-control-lg" />
                         <label  class="form-label" >Contraseña</label>
                     </div>
-
+                    <!-- Entrada para el nombre de usuario -->
                     <div class="form-outline mb-4">
                         <input type="text" name="nombreUsuarioRegistrar" class="form-control form-control-lg" />
                         <label  class="form-label" >Nombre de Usuario</label>
                     </div>
-
+                    <!-- Botonoes para registrar usuario o cancelar la accion -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary" >Registrar Usuario</button>
@@ -96,12 +96,14 @@
 </div>
 
 <%
+    // Se pide el resultado del registro de usuario para segun este, lanzar la alerta
     String alertaRegistroUsuario = (String) request.getSession().getAttribute("alertaRegistroUsuario");
-    System.out.println("REGISTRO USUARIOS " + alertaRegistroUsuario);
+    //prueba
+    //System.out.println("REGISTRO USUARIOS " + alertaRegistroUsuario);
 
-    if (alertaRegistroUsuario != null && !alertaRegistroUsuario.isEmpty()) {
+    if (alertaRegistroUsuario != null && !alertaRegistroUsuario.isEmpty()) {//si la variable alertaRegistroUsuario llega diferente de null y diferente de vacia 
 
-        if (alertaRegistroUsuario.equals("true")) {
+        if (alertaRegistroUsuario.equals("true")) { // si la variable alertaRegistroUsuario es igual a "true" lanza la alerta de error, ya que significa que la cedula ya esta en uso 
 %>
 
 <script>
@@ -119,8 +121,9 @@
     // Limpiar la alerta después de mostrarla
     request.getSession().removeAttribute("alertaRegistroUsuario");
 
-} else if (alertaRegistroUsuario.equals("false")) {
-    System.out.println("REGISTRO DE USUARIO " + alertaRegistroUsuario);
+} else if (alertaRegistroUsuario.equals("false")) {// si la variable alertaRegistroUsuario es igual a "false", se lanza la alerta de registro exitoso ya que significa que la cedula no esta en uso y el usuario se pudo registrar de forma exitosa
+    //prueba
+    //System.out.println("REGISTRO DE USUARIO " + alertaRegistroUsuario);
 %> 
 <script>
     Swal.fire({
@@ -137,10 +140,12 @@
         // Limpiar la alerta después de mostrarla
         request.getSession().removeAttribute("alertaRegistroUsuario");
     }
-} else {
+} else {// de lo contrario entra a este if para lanzar la alerta de inicio de sesion
+    // se pide el resultado de la variable alertaInicioSesion
     String alertaInicioSesion = (String) request.getSession().getAttribute("alertaInicioSesion");
-    System.out.println("LA ALERTA DE INICIO DE SESION ES: " + alertaInicioSesion);
-    if (alertaInicioSesion != null && alertaInicioSesion.equals("false")) {
+    //prueba
+    //System.out.println("LA ALERTA DE INICIO DE SESION ES: " + alertaInicioSesion);
+    if (alertaInicioSesion != null && alertaInicioSesion.equals("false")) {// si la variable alertaInicioSesion es diferente de null y es igual a "false", se lanza la alerta de error para decirle al usuario que no pudo ingresar al sistema y que intente de nuevo
 %>
 
 <script>
@@ -154,8 +159,8 @@
 </script>
 
 <%
-    // Limpiar la alerta después de mostrarla
-        request.getSession().removeAttribute("alertaRegistroUsuario");
+            // Limpiar la alerta después de mostrarla
+            request.getSession().removeAttribute("alertaRegistroUsuario");
         }
 
     }

@@ -41,13 +41,13 @@ public class ControladorUsuario {
             // se agrega el usuario a el ArrayList
             registroUsuarios.add(primerUsuario);
             guardarUsuarioTxt(registroUsuarios, context);
-            System.out.println("Se agregó el primer usuario");
+           // System.out.println("Se agregó el primer usuario");
         } else {
             // Si el ArrayList no está vacío, verifica si la cédula ya está en uso
             for (Usuario a : registroUsuarios) {
                 if (a.getCedula().equals(cedula)) {
                     comprobacionRegistro = true;
-                    System.out.println("La cédula ya está en uso");
+                    //System.out.println("La cédula ya está en uso");
                     break;
                 }
             }
@@ -56,7 +56,7 @@ public class ControladorUsuario {
             if (!comprobacionRegistro) {
                 Usuario nuevoUsuario = new Usuario(cedula, contrasenia, nombre);
                 registroUsuarios.add(nuevoUsuario);
-                System.out.println("Se registró el usuario");
+                //System.out.println("Se registró el usuario");
                 guardarUsuarioTxt(registroUsuarios, context);
                 //mostrarRegistros(registroUsuarios);
             }
@@ -78,7 +78,7 @@ public class ControladorUsuario {
     public boolean inicioSesion(String cedula, String contrasenia, ArrayList<Usuario> registroUsuarios) {
         boolean comprobacionSesion = false;
         if (registroUsuarios.isEmpty()) {// si el array esta vacio, no hay registros aun
-            System.out.println("El array esta vacio para el inicio de sesion, no hay usuarios registrados");
+            //System.out.println("El array esta vacio para el inicio de sesion, no hay usuarios registrados");
             comprobacionSesion = false;
 
         } else {// si el ArrayList es diferente de vacio, se comparará las cedulas y contraseñas de los usuarios registrados, de acuedo a esto se permitirá el accceso o se negará
@@ -86,13 +86,13 @@ public class ControladorUsuario {
 
                 if (cedula.equals(inicioSesionComprobacion.getCedula()) && contrasenia.equals(inicioSesionComprobacion.getContrasenia())) {
                     comprobacionSesion = true;
-                    System.out.println("El usuario entro a la plataforma");
+                    //System.out.println("El usuario entro a la plataforma");
                     break;
 
                 } 
             }
             if(!comprobacionSesion){
-                System.out.println("El usuario no pudo entrar a la plataforma");
+                //System.out.println("El usuario no pudo entrar a la plataforma");
             }
         }
         return comprobacionSesion;
@@ -114,6 +114,12 @@ public class ControladorUsuario {
         }
     }
 
+    /**
+     * Metodo para guardar usuarios en la hoja txt
+     * @param registroUsuarios
+     * @param context
+     * @throws FileNotFoundException 
+     */
     public void guardarUsuarioTxt(ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException {
         //creamos la ruta de los archivos data y la hoja txt
         String path = "data/UsuariosRegistrados.txt";
@@ -123,7 +129,7 @@ public class ControladorUsuario {
         File archivo = new File(Rpath);
         try (PrintWriter pluma = new PrintWriter(archivo)) {//se crea la pluma con la que se va a escribir en la hoja de texto
             if (registroUsuarios.isEmpty()) {//si el arrayList registrousuarios esta vacio se lanza un mensaje por consola 
-                System.out.println("No hay usuarios registrados en el sistemas");
+                //System.out.println("No hay usuarios registrados en el sistemas");
             } else {// de lo contrario se escribe a los usuarios en el txt 
                 for (Usuario guardarUsuario : registroUsuarios) {
                     pluma.println(guardarUsuario.getCedula() + "," + guardarUsuario.getContrasenia() + "," + guardarUsuario.getnombreUsuario());
@@ -132,10 +138,17 @@ public class ControladorUsuario {
             }
         }
         //Ruta en la que se guardaran los usuarios
-        System.out.println("Ruta UsuariosRegistrados.txt: " + Rpath);
-        System.out.println("se guardo los usuarios");
+        //System.out.println("Ruta UsuariosRegistrados.txt: " + Rpath);
+        //System.out.println("se guardo los usuarios");
     }
 
+    /**
+     * Metodo para leer el registro que queda guardado en la hoja UsuariosRegistrados.txt
+     * @param registroUsuarios
+     * @param context
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public void leerRegistroUsuarios(ArrayList<Usuario> registroUsuarios, ServletContext context) throws FileNotFoundException, IOException {
 
         // Limpiar el ArrayList antes de cargar los usuarios para que no se repitan 

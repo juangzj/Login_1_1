@@ -60,6 +60,7 @@ public class SvLogin extends HttpServlet {
         // System.out.println("Cedula: " + cedulaRegistrar);
         //System.out.println("Contraseña: " + contraseniaRegistrar);
         //System.out.println("Nombre de usuario: " + nombreUsuarioRegistrar);
+        
         /**
          * if donde se verificara los datos ingresados y se determina si el
          * usuario se registrara o iniciara sesion
@@ -74,25 +75,30 @@ public class SvLogin extends HttpServlet {
                alertaRegistroUsuario = "false"; // el usuario se registro de forma exitosa
                
             }
+            
              HttpSession miSesion = request.getSession();
-             miSesion.setAttribute("alertaRegistroUsuario", alertaRegistroUsuario);
-            response.sendRedirect("index.jsp");
+             miSesion.setAttribute("alertaRegistroUsuario", alertaRegistroUsuario);// mandamos las variables al jsp 
+            response.sendRedirect("index.jsp"); //envia al usuario a la pagina index
+            
         } else {// de lo contrario, se pedira las variables para el inicio de sesion
             String cedula = request.getParameter("cedula");
             String contrasenia = request.getParameter("contrasenia");
-            System.out.println("cedula inicio de sesion: " + cedula);
-            System.out.println("contrasenia incio de sesion: " + contrasenia);
-
+            
+            //prueba
+            //System.out.println("cedula inicio de sesion: " + cedula);
+            //System.out.println("contrasenia incio de sesion: " + contrasenia);
+            
+            //para el inicio de sesion
             boolean comprobacionSesion = controladorU.inicioSesion(cedula, contrasenia, registroUsuarios);
             if (comprobacionSesion == true) {
-
-                response.sendRedirect("Plataforma.jsp");
+                //si la comprobacion sesion es verdadera, el usuario puede ingresar a la plataforma
+                response.sendRedirect("Plataforma.jsp");// se redirecciona a la plataforma
             } else {
-
+                // de lo contrario, se manda la variable en falsa al jsp para que salga la alerta de error en el inicio de sesion
                 alertaInicioSesion = "false";
                 HttpSession miSesion = request.getSession();
                 miSesion.setAttribute("alertaInicioSesion", alertaInicioSesion);
-
+                //se vuelve a redireccionar a la pagima index donde tiene que hacer el ingreso de nuevo
                 response.sendRedirect("index.jsp");
             }
         }
